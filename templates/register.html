@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>UMKC LMS Demo | Registration</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --umkc-blue: #003b71;
+            --umkc-gold: #ffb81c;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image:
+                linear-gradient(
+                    rgba(0, 35, 70, 0.23),
+                    rgba(0, 35, 70, 0.28)
+                ),
+                url("/static/lms/umkc-campus-bg.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .top-brand {
+            background: var(--umkc-blue);
+            border-bottom: 4px solid var(--umkc-gold);
+            padding: 15px 25px;
+            color: white;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .brand-gold {
+            color: var(--umkc-gold);
+        }
+
+        .register-wrapper {
+            min-height: calc(100vh - 65px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px 15px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 490px;
+            background: rgba(255, 255, 255, 0.96);
+            border: none;
+            border-top: 5px solid var(--umkc-gold);
+            border-radius: 16px;
+            box-shadow: 0 12px 35px rgba(0, 25, 55, 0.25);
+        }
+
+        .register-card .card-body {
+            padding: 35px;
+        }
+
+        .register-title {
+            color: var(--umkc-blue);
+            font-size: 29px;
+            font-weight: 700;
+        }
+
+        .register-subtitle {
+            color: #687789;
+            font-size: 15px;
+        }
+
+        .gold-line {
+            width: 60px;
+            height: 4px;
+            background: var(--umkc-gold);
+            margin: 14px auto 25px;
+            border-radius: 5px;
+        }
+
+        .form-label {
+            display: block;
+            width: 100%;
+            color: #26384a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            height: 49px;
+            padding: 10px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            border-color: var(--umkc-blue);
+            box-shadow: 0 0 0 0.2rem rgba(0, 59, 113, 0.13);
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 75px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--umkc-blue);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-umkc {
+            width: 100%;
+            min-height: 49px;
+            background: var(--umkc-blue);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+        }
+
+        .btn-umkc:hover {
+            background: #00549a;
+            color: white;
+        }
+
+        .register-footer {
+            color: #40566d;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        @media (max-width: 480px) {
+            .register-card .card-body {
+                padding: 25px 20px;
+            }
+
+            .top-brand {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-brand">
+        UMKC <span class="brand-gold">|</span> LMS Demo
+    </header>
+
+    <main class="register-wrapper">
+
+        <div class="card register-card">
+            <div class="card-body">
+
+                <h1 class="text-center register-title">
+                    Create Your Account
+                </h1>
+
+                <p class="text-center register-subtitle mb-0">
+                    Learn • Collaborate • Lead
+                </p>
+
+                <div class="gold-line"></div>
+
+                {% with messages = get_flashed_messages() %}
+                    {% for message in messages %}
+                        <div class="alert alert-info">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+
+                <form action="{{ url_for('register') }}" method="POST">
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            Password
+                        </label>
+
+                        <div class="password-wrapper">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required>
+
+                            <button
+                                type="button"
+                                class="show-password"
+                                onclick="togglePassword()">
+                                Show
+                            </button>
+                        </div>
+
+                        <small class="text-muted">
+                            Use at least 8 characters.
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-umkc">
+                        Create Account
+                    </button>
+
+                </form>
+
+                <p class="text-center mt-4 mb-0">
+                    Already have an account?
+
+                    <a href="{{ url_for('home') }}"
+                       class="text-decoration-none fw-semibold"
+                       style="color: #003b71;">
+                        Login here
+                    </a>
+                </p>
+
+                <div class="register-footer">
+                    UMKC LMS Demo – Unofficial Student Project
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const button = document.querySelector(".show-password");
+
+            if (password.type === "password") {
+                password.type = "text";
+                button.textContent = "Hide";
+            } else {
+                password.type = "password";
+                button.textContent = "Show";
+            }
+        }
+    </script>
+
+</body>
+</html>
+

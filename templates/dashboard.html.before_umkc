@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <tittle>NAS Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-primary px-4"
+    <span class="navbar-brand">NAS Server</span>
+    <a href="{{ url_for('change_password_page') }}"
+       class="btn btn-light me-2">
+        Change Password
+    </a>
+    <a href="{{ url_for('logout') }}"
+       class="btn btn-light">
+       Logout
+    </a>
+</nav>
+<div class="container mt-5">
+    <h2>NAS Management Dashboard</h2>
+    <p class="text-muted">Welcome to your Network Attached Storage System.</p>
+ 
+    <div class="row mt-4">
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>File Management</h5>
+                <p>Upload and download files.</p>
+                <a href="/files" class="btn btn-primary w-100">Open File Manager</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>User Management</h5>
+                <p>Manage user accounts.</p>
+                <a href="{{ url_for('manage_users') }}" class="btn btn-primary w-100">
+                    Open User Management
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>System Monitoring</h5>
+                <p>Monitor CPU, RAM and storage.</p>
+                <a href="{{ url_for('monitor') }}" class="btn btn-primary w-100">
+                    Open System Monitoring
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>System Logs</h5>
+                <p>View server activity, warnings and errors.</p>
+                <a href="{{ url_for('system_logs') }}"
+                   class ="btn btn-primary w-100">
+                    Open System Logs
+                </a>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>Backup & Restore</h5>
+                <p>Create, dowload and restore NAS backups.</p>
+                <a href="{{ url_for('backup_management') }}"
+                   class="btn btn-primary w-100">
+                    Open Backup Management
+                </a>
+            </div>
+        </div>
+        {% if session.get('role') == 'admin' %}
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>Student Storage Management</h5>
+                <p> Monitor student storage usage, remaining quota, uploaded files and file activity </p>
+                <a href="{{ url_for('admin_storage') }}"
+                   class="btn btn-primary w-100">
+                    Open Student Storage Dashboard
+                </a>
+            </div>
+        </div>
+
+        {% else %}
+
+<!-- STUDENT PERSONAL STORAGE CARD -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm p-4 h-100">
+                <h5>My Storage</h5>
+                <p>View your storage usage, remaining space, uploaded files and activity history.</p>
+                <a href="{{ url_for('my_storage') }}"
+                   class="btn btn-primary w-100">
+                    View My Storage
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Recycle Bin</h5>
+
+                    <p class="card-text">
+                        View deleted files, restore files,
+                        or permanently delete selected items.
+                    </p>
+
+                    <a href="{{ url_for('view_recycle_bin') }}"
+                       class="btn btn-primary w-100">
+                         Open Recycle Bin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

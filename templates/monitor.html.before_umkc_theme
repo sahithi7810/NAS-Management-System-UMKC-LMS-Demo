@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>System Monitoring</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-primary px-4">
+    <span class="navbar-brand">NAS System Monitoring</span>
+    <a href="/dashboard" class="btn btn-light">Back to Dashboard</a>
+</nav>
+
+<div class="container mt-5">
+    <h2>System Monitoring</h2>
+    <p class="text-muted">Live server performance information</p>
+    <div id="system-alerts"
+         class="alret alert-success"
+         role="status">
+        All system checks normal.
+    </div>
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>CPU Usage</h5>
+                <h2 id="cpu">Loading....</h2>
+                <div class-"progress mt-2" style="height: 15px;">
+                    <div id="cpu-bar"
+                         class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 0%"
+                         aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>RAM Usage</h5>
+                <h2 id="ram">Loading...</h2>
+                <p id="ram-details"></p>
+                <div class="progress mt-2" style="height: 15px;">
+                    <div id="ram-bar"
+                         class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 0%"
+                         aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>Disk Usage</h5>
+                <h2 id="disk">Loading....</h2>
+                <p id="disk-details"></p>
+                <div class="progress mt-2" style="height: 15px;">
+                    <div id="disk-bar"
+                         class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: 0%"
+                         aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>Network Traffic</h5>
+                <h2 id="network">Loading...</h2>
+                <p id="network-details"></p>
+                <p><strong>Upload Speed:</strong>
+                   <span id="upload-speed">Loading...</span></p>
+                <p><strong>Download Speed:</strong>
+                   <span id="download-speed">Loading...</span></p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>Server Uptime</h5>
+                <h2 id="uptime">Loading...</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm p-3">
+                <h5>Operating System</h5>
+                <p id="os">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-muted mt-4">Refreshes automatically every 5 seconds.</p>
+    <p id="error" class="text-danger"></p>
+</div>
+
+<script>
+function updateProgressBar(id, value) {
+    const bar = document.getElementById(id);
+    const percentage = Math.max(
+        0,
+        Math.min(100, Number(value) || 0)
+    );
+    bar.style.width = percentage + "%";
+    bar.setAttribute("aria-valuenow", percentage);
+    bar.classList.remove(
+        "bg-success",
+        "bg-warning",
+        "bg-danger"
+    );
+    if (percentage >= 90) {
+        bar.classList.add("bg-danger");
+    } else if (percentage >= 75) {
+        bar.classList.add("bg-warning");
+    } else {
+        bar.classList.add("bg-success");
+    }
+}
+async function updateMonitor() {
+    try {
+        const response = await fetch("/api/system-info");
+
+        if(!response.ok) {
+           throw new Error("Unable to load system information");
+        }
+
+        const data = await response.json();
+        updateProgressBar("cpu-bar", data.cpu);
+        updateProgressBar("ram-bar", data.ram);
+        updateProgressBar("disk-bar", data.disk);
+        const alerts = [];
+        if (data.cpu >= 80) {
+            alerts.push("High CPU usage detected.");
+        }
+        if (data.ram >= 80) {
+            alerts.push("High RAM usage detected.");
+        }
+        if (data.disk >=90) {
+            alerts.push("Disk storage is almost full.");
+        }
+        const alertBox = document.getElementById("system-alerts");
+
+        if (alerts.length > 0) {
+            alertBox.className = "alert alert-warning";
+            alertBox.textContent = alerts.join(" ");
+        } else {
+            alertBox.className = "alert alert-success";
+            alertBox.textContent = "ALL system checks normal.";
+        }
+        document.getElementById("cpu").textContent = data.cpu + "%";
+        document.getElementById("ram").textContent = data.ram + "%";
+        document.getElementById("ram-details").textContent =
+            data.ram_used + " GB used of " + data.ram_total + " GB";
+
+        document.getElementById("disk").textContent = data.disk + "%";
+        document.getElementById("disk-details").textContent =
+            data.disk_used + " GB used of " + data.disk_total + " GB";
+        document.getElementById("network").textContent =
+            data.network_received + " MB received";
+        document.getElementById("network-details").textContent =
+            data.network_sent + "MB sent";
+        document.getElementById("upload-speed").textContent =
+            Number(data.upload_speed || 0).toFixed(2) + " KB/s";
+        document.getElementById("download-speed").textContent =
+            Number(data.download_speed || 0).toFixed(2) + "KB/s";
+        document.getElementById("uptime").textContent =
+            data.uptime + "hours";
+        document.getElementById("os").textContent = data.os;
+        document.getElementById("error").textContent = "";
+    } catch (error) {
+        document.getElementById("error").textContent = error.message;
+    }
+}
+updateMonitor();
+
+setInterval(updateMonitor, 5000);
+</script>
+</body>
+</html>

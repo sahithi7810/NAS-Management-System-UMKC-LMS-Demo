@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UMKC LMS Demo | Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --umkc-blue: #003b71;
+            --umkc-bright-blue: #0066cc;
+            --umkc-gold: #ffb81c;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #edf3f9;
+            background-image:
+                linear-gradient(
+                    rgba(239, 246, 253, 0.66),
+                    rgba(239, 246, 253, 0.72)
+                ),
+                url("/static/lms/umkc-campus-bg.png");
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+        }
+
+        .umkc-navbar {
+            background: var(--umkc-blue);
+            border-bottom: 4px solid var(--umkc-gold);
+            padding: 13px 25px;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-size: 23px;
+            font-weight: 700;
+        }
+
+        .brand-accent {
+            color: var(--umkc-gold);
+        }
+
+        .page-container {
+            max-width: 1250px;
+            margin: 40px auto;
+        }
+
+        .intro-panel {
+            background: rgba(255, 255, 255, 0.88);
+            border-radius: 16px;
+            padding: 28px;
+            border-left: 6px solid var(--umkc-gold);
+            box-shadow: 0 5px 18px rgba(0, 35, 75, 0.10);
+            margin-bottom: 28px;
+        }
+
+        .intro-panel h1 {
+            color: var(--umkc-blue);
+            font-weight: 700;
+        }
+
+        .tagline {
+            color: #765200;
+            font-weight: 600;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(0, 59, 113, 0.12);
+            border-top: 4px solid var(--umkc-blue);
+            border-radius: 13px;
+            padding: 22px;
+            height: 100%;
+            box-shadow: 0 5px 16px rgba(0, 35, 75, 0.10);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 9px 22px rgba(0, 35, 75, 0.16);
+        }
+
+        .dashboard-card h5 {
+            color: var(--umkc-blue);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-card p {
+            color: #5c6875;
+            min-height: 45px;
+        }
+
+        .btn-umkc {
+            background: var(--umkc-blue);
+            color: white;
+            border: none;
+        }
+
+        .btn-umkc:hover {
+            background: var(--umkc-bright-blue);
+            color: white;
+        }
+
+        .gold-line {
+            width: 65px;
+            height: 4px;
+            background: var(--umkc-gold);
+            border-radius: 5px;
+            margin: 14px 0;
+        }
+
+        .site-footer {
+            text-align: center;
+            color: #334d68;
+            padding: 25px 10px;
+            font-size: 13px;
+        }
+
+        .alert-message {
+            background: rgba(255,255,255,0.94);
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg umkc-navbar">
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+            UMKC <span class="brand-accent">|</span> LMS Demo
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+            <a href="{{ url_for('change_password_page') }}"
+               class="btn btn-light btn-sm">
+                Change Password
+            </a>
+
+            <a href="{{ url_for('logout') }}"
+               class="btn btn-outline-light btn-sm">
+                Logout
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+<main class="container page-container">
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div class="alert alert-info alert-message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <section class="intro-panel">
+
+        <h1>Welcome to UMKC LMS Demo</h1>
+
+        <p class="mb-1">
+            Learn, Collaborate and Lead.
+        </p>
+
+        <div class="gold-line"></div>
+
+        <p class="tagline mb-0">
+            Manage your files, users and NAS resources efficiently.
+        </p>
+
+        <small class="text-muted">
+            Signed in as: {{ session.get('username', 'User') }}
+        </small>
+
+    </section>
+
+    <div class="row g-4">
+
+        <!-- FILE MANAGEMENT -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>File Management</h5>
+
+                <p>Upload, download and organize your files and folders.</p>
+
+                <a href="{{ url_for('files') }}"
+                   class="btn btn-umkc w-100">
+                    Open File Manager
+                </a>
+            </div>
+        </div>
+
+        <!-- USER MANAGEMENT -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>User Management</h5>
+
+                <p>Manage user accounts and permissions.</p>
+
+                <a href="{{ url_for('manage_users') }}"
+                   class="btn btn-umkc w-100">
+                    Open User Management
+                </a>
+            </div>
+        </div>
+
+        <!-- SYSTEM MONITORING -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>System Monitoring</h5>
+
+                <p>Monitor CPU, RAM and storage usage.</p>
+
+                <a href="{{ url_for('monitor') }}"
+                   class="btn btn-umkc w-100">
+                    Open System Monitoring
+                </a>
+            </div>
+        </div>
+
+        <!-- SYSTEM LOGS -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>System Logs</h5>
+
+                <p>View server activity, warnings and errors.</p>
+
+                <a href="{{ url_for('system_logs') }}"
+                   class="btn btn-umkc w-100">
+                    Open System Logs
+                </a>
+            </div>
+        </div>
+
+        <!-- BACKUP AND RESTORE -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>Backup &amp; Restore</h5>
+
+                <p>Create, download and restore NAS backups.</p>
+
+                <a href="{{ url_for('backup_management') }}"
+                   class="btn btn-umkc w-100">
+                    Open Backup Management
+                </a>
+            </div>
+        </div>
+
+        <!-- ADMIN OR STUDENT STORAGE -->
+        {% if session.get('role') == 'admin' %}
+
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>Student Storage Management</h5>
+
+                <p>Monitor student storage, quotas and uploaded file activity.</p>
+
+                <a href="{{ url_for('admin_storage') }}"
+                   class="btn btn-umkc w-100">
+                    Open Student Storage Dashboard
+                </a>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>My Storage</h5>
+
+                <p>View your storage usage, remaining quota and file activity.</p>
+
+                <a href="{{ url_for('my_storage') }}"
+                   class="btn btn-umkc w-100">
+                    View My Storage
+                </a>
+            </div>
+        </div>
+
+        {% endif %}
+
+        <!-- RECYCLE BIN -->
+        <div class="col-md-6 col-xl-4">
+            <div class="dashboard-card">
+                <h5>Recycle Bin</h5>
+
+                <p>View deleted files, restore files or permanently delete items.</p>
+
+                <a href="{{ url_for('view_recycle_bin') }}"
+                   class="btn btn-umkc w-100">
+                    Open Recycle Bin
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <strong>UMKC LMS Demo</strong>
+        <span class="d-block mt-1">
+            Unofficial Student Project | Learn • Collaborate • Lead
+        </span>
+    </footer>
+
+</main>
+
+</body>
+</html>
+

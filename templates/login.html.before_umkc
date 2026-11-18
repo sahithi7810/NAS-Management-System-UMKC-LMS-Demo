@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="7EcfSBk-tGjZQXY3n-GCS4XopsTAt5NUI_ceoLsGi4o" />
+    <title>UMKC LMS Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+ 
+            <div class="col-md-5 col-lg-4">
+                <div class="card shadow border-0 rounded-4">
+                    <div class="card-body p-4">
+
+                        <h2 class="text-center text-primary mb-2">
+                            NAS Server
+                        </h2>
+
+                        <p class="text-center text-muted mb-4">
+                           Network Attached Storage Management
+                        </p>
+
+                        {% with messages = get_flashed_messages() %}
+                            {% for message in messages %}
+                                <div class="alert alert-info">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endwith %}
+                        <form action="/login" method="POST"
+
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="Enter your username"
+                                    required>
+                            </div>  
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter your password"
+                                    required>
+                            </div>  
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100">
+                                Login
+                            </button> 
+
+                        </form>
+
+                        <p class="text-center mt-4 mb-0">
+                            New user?
+                            <a href="/register" class="text-decoration-none">
+                                Create an account
+                            </a>
+                        </p>
+
+
+                    </div>
+                </div>
+
+                <p class="text-center text-muted mt-3 small">
+                    NAS Management Systen | Secure Storage
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

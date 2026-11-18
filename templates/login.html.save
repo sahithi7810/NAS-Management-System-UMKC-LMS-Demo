@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NAS Server Login</title>
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/booststrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="card mx-auto shadow p-4" style="max-width:400px">
+
+        <h2 class="text-center">NAS Server</h2>
+        <p class="text-center text-muted">
+            Network Attached Strorage Management
+        </P>
+
+  
+        <form action="/dashboard" method="GET">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control mb-3"
+                   placeholder="Enter username" required>
+
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control mb-3"
+                   placeholder="Enter password" required>
+
+
+            <button class="btn btn-primary w-100">
+                Login
+            </button>
+        </form>
+     </div>
+</div>
+
+</body>
+</html>
+
+v
+v
+c
+cccc
+uuuuIIIIUU
+
+
+
+
+
+
+
+
+
